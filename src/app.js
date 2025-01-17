@@ -5,7 +5,7 @@ import passport from 'passport'
 import dotenv from 'dotenv';
 dotenv.config();
 import authRoutes from './routes/authRoutes.js';
-
+import urlRoutes from './routes/urlRoutes.js';
 import connectDB from './config/db.js';
 
 
@@ -18,6 +18,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/url', urlRoutes);
 
 connectDB()
 
