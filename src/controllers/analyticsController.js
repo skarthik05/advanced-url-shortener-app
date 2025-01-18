@@ -2,6 +2,7 @@ import geoip from 'geoip-lite';
 import Analytics from '../models/Analytics.js';
 import URL from '../models/URL.js';
 import { getDateOffsetByDays } from '../utils/dateUtils.js';
+import redisClient from '../config/redis.js';
 
 export const logAnalytics = async (req, res) => {
   try {
@@ -25,6 +26,10 @@ export const logAnalytics = async (req, res) => {
 export const getUrlAnalytics = async (req, res) => {
   try {
     const { alias } = req.params;
+    const cachedAnalytics = await redisClient.get(`analytics:${alias}`);
+    if (cachedAnalytics) {
+      return res.json(JSON.parse(cachedAnalytics));
+    }
 
     const url = await URL.findOne({ customAlias: alias });
     if (!url) {
@@ -128,6 +133,8 @@ export const getUrlAnalytics = async (req, res) => {
       osType: result.osType,
       deviceType: result.deviceType,
     };
+
+    await redisClient.setex(`analytics:${alias}`,3600 ,JSON.stringify(response));
 
 
     res.json(response);
