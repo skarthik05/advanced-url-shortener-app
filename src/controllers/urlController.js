@@ -40,4 +40,3 @@ export const redirectShortUrl = async (req, res, next) => {
 };
 
 
-export default { createShortUrl, redirectShortUrl };
