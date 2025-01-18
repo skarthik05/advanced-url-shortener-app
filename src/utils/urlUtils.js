@@ -7,4 +7,3 @@ export const generateShortUrl = (customAlias) => {
     return `${baseUrl}/${shortPath}`;
 };
 
-export default { generateShortUrl };
