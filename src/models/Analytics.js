@@ -13,7 +13,6 @@ const analyticsSchema = new mongoose.Schema({
   },
 });
 
-const Analytic = mongoose.model('Analytic', analyticsSchema);
+const Analytics = mongoose.model('Analytics', analyticsSchema);
 
-
-export default Analytic;
+export default Analytics;
