@@ -224,3 +224,115 @@ export const getTopicAnalytics = async (req, res) => {
 };
 
 
+export const getUserAnalytics = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+    const userUrls = await URL.find({ userId }).select('_id');
+
+    const urlIds = userUrls.map((url) => url._id);
+
+    const pipeline = [
+      {
+        $match: {
+          urlId: { $in: urlIds },
+          ipAddress: { $ne: ipAddress },
+        },
+      },
+      {
+        $facet: {
+          totalClicks: [
+            { $count: 'count' },
+          ],
+          uniqueUsers: [
+            {
+              $group: {
+                _id: null,
+                uniqueUsers: { $addToSet: '$ipAddress' },
+              },
+            },
+            {
+              $project: {
+                uniqueUsers: { $size: '$uniqueUsers' },
+                _id: 0,
+              },
+            },
+          ],
+          clicksByDate: [
+            {
+              $group: {
+                _id: {
+                  $dateToString: { format: '%Y-%m-%d', date: '$timestamp' },
+                },
+                clicks: { $sum: 1 },
+              },
+            },
+            { $sort: { _id: 1 } },
+            {
+              $project: {
+                date: '$_id',
+                clicks: 1,
+                _id: 0,
+              },
+            },
+          ],
+
+          osType: [
+            {
+              $group: {
+                _id: '$osType',
+                uniqueClicks: { $sum: 1 },
+                uniqueUsers: { $addToSet: '$ipAddress' },
+              },
+            },
+            {
+              $project: {
+                osName: '$_id',
+                uniqueClicks: 1,
+                uniqueUsers: { $size: '$uniqueUsers' },
+                _id: 0,
+              },
+            },
+          ],
+
+          deviceType: [
+            {
+              $group: {
+                _id: '$deviceType',
+                uniqueClicks: { $sum: 1 },
+                uniqueUsers: { $addToSet: '$ipAddress' },
+              },
+            },
+            {
+              $project: {
+                deviceName: '$_id',
+                uniqueClicks: 1,
+                uniqueUsers: { $size: '$uniqueUsers' },
+                _id: 0,
+              },
+            },
+          ],
+
+        },
+      },
+    ];
+
+    const [result] = await Analytics.aggregate(pipeline);
+
+    const response = {
+      totalUrls: userUrls.length,
+      totalClicks: result?.totalClicks[0]?.count ?? 0,
+      uniqueUsers: result?.uniqueUsers[0]?.uniqueUsers ?? 0,
+      clicksByDate: result?.clicksByDate ?? [],
+      osType: result?.osType ?? [],
+      deviceType: result?.deviceType ?? [],
+    };
+
+    res.json(response);
+
+
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
