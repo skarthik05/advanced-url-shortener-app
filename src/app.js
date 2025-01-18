@@ -7,6 +7,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import authRoutes from './routes/authRoutes.js';
 import urlRoutes from './routes/urlRoutes.js';
+import analyticRoutes from './routes/analyticRoutes.js';
+
 import connectDB from './config/db.js';
 
 
@@ -18,8 +20,11 @@ app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUniniti
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(useragent.express());
+
+
 app.use('/api/auth', authRoutes);
 app.use('/api/url', urlRoutes);
+app.use('/api/analytics', analyticRoutes);
 
 connectDB()
 
