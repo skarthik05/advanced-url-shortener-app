@@ -10,8 +10,8 @@ export const logAnalytics = async (req, res) => {
       urlId: req.urlDoc._id,
       userAgent: req.headers['user-agent'],
       ipAddress,
-      osType: req.useragent?.os,
-      deviceType: req.useragent?.platform,
+      osType: req.useragent.os,
+      deviceType: req.useragent.isMobile ? 'Mobile' : req.useragent.isTablet ? 'Tablet' : 'Desktop',
       geolocation: geo ? { country: geo.country, city: geo.city } : {},
     };
     await Analytics.create(analyticsData);
