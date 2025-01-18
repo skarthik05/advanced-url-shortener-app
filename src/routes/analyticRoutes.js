@@ -3,9 +3,8 @@ import { getUrlAnalytics, getTopicAnalytics, getUserAnalytics } from '../control
 import rateLimiter from '../middlewares/rateLimiter.js';
 const router = express.Router();
 
-router.get(`/overall`, rateLimiter, getUserAnalytics)
+router.get('/topic/:topic', getTopicAnalytics);
+router.get('/overall', rateLimiter, getUserAnalytics);
 router.get('/:alias', getUrlAnalytics);
-router.get(`/topic/:topic`, getTopicAnalytics);
-
 
 export default router;
