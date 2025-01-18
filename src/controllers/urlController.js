@@ -23,4 +23,21 @@ export const createShortUrl = async (req, res) => {
     }
 };
 
-export default { createShortUrl };
+
+export const redirectShortUrl = async (req, res, next) => {
+    try {
+        const { alias: customAlias } = req.params;
+
+        const urlDoc = await URL.findOne({ customAlias });
+        if (!urlDoc) return res.status(404).json({ error: 'Short URL not found' });
+
+        req.urlDoc = urlDoc;
+        res.redirect(urlDoc.longUrl);
+        next();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export default { createShortUrl, redirectShortUrl };
