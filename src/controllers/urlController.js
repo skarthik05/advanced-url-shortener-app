@@ -14,7 +14,7 @@ export const createShortUrl = async (req, res) => {
             topic,
             userId: req.user._id,
         });
-        await redisClient.setex(customAlias, 3600, urlDoc.longUrl);
+        await redisClient.setex(customAlias, 3600, longUrl);
         res.status(201).json({ shortUrl, createdAt: newUrl.createdAt });
     } catch (error) {
         res.status(500).json({ error: error.message });
