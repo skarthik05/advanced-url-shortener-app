@@ -18,6 +18,7 @@
     "express-session": "^1.18.1",
     "express-useragent": "^1.0.15",
     "geoip-lite": "^1.4.10",
+    "ioredis": "^5.4.2",
     "mongoose": "^8.9.5",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
