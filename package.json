@@ -2,10 +2,11 @@
   "name": "advanced-url-shortener-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon src/server.js"
+    "start:dev": "nodemon src/server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -19,12 +20,39 @@
     "express-useragent": "^1.0.15",
     "geoip-lite": "^1.4.10",
     "ioredis": "^5.4.2",
+    "jest": "^29.7.0",
     "mongoose": "^8.9.5",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "supertest": "^7.0.0",
     "uuid": "^11.0.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@jest/globals": "^29.7.0",
+    "babel-jest": "^29.7.0",
     "nodemon": "^3.1.9"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testMatch": [
+      "<rootDir>/src/tests/**/*.test.js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/tests/**"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!your-esm-package)"
+    ]
   }
 }
