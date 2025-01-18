@@ -12,7 +12,7 @@ export const createShortUrl = async (req, res) => {
 
         const newUrl = await URL.create({
             longUrl,
-            customAlias: shortUrl,
+            shortUrl,
             topic,
             userId: req.user._id,
         });
