@@ -31,7 +31,7 @@ export const getUrlAnalytics = async (req, res) => {
       return res.json(JSON.parse(cachedAnalytics));
     }
 
-    const url = await URL.findOne({ customAlias: alias });
+    const url = await URL.findOne({ shortUrl: alias });
     if (!url) {
       return res.status(404).json({ error: 'URL not found' });
     }
