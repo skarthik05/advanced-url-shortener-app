@@ -35,6 +35,14 @@ PORT=YOUR_PORT
 
 ---
 
+
+**NOTE:**
+- For now, you need to copy and paste the cookie from the browser into the request header to access some API routes.
+- Currently, user details are being accessed directly from the cookie.
+
+---
+
+
 ## Routes
 
 ### URL Shortening:
