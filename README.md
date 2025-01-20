@@ -45,6 +45,25 @@ PORT=YOUR_PORT
 
 ## Routes
 
+### **Authentication:**
+
+- **GET** `/auth/google`  
+  Initiates the Google OAuth login process.  
+
+  - Request:  
+    Redirects the user to the Google login page to authenticate using their Google account.  
+
+    Query parameters:  
+    - `scope`: Specifies the access scope required (e.g., `profile`, `email`).  
+
+  Example:  
+  ```bash
+  GET /api/auth/google
+  ```
+
+  - Response:  
+    Redirects the user to the Google login page. Upon successful authentication, the user is redirected to the specified callback URL (configured in the `.env` file under `GOOGLE_CALLBACK_URL`).  
+
 ### URL Shortening:
 
 - **POST** `/url/shorten` - Shorten a long URL
@@ -233,3 +252,7 @@ For example, if running locally, you can make API requests to:
 ```
 http://localhost/api
 ```
+
+
+
+
