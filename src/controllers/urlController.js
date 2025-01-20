@@ -5,9 +5,9 @@ import redisClient from '../config/redis.js';
 export const createShortUrl = async (req, res) => {
     try {
         const { longUrl, customAlias, topic } = req.body;
-        if(!longUrl) return res.status(400).json({ error: 'Long URL is required' });
+        if (!longUrl) return res.status(400).json({ error: 'Long URL is required' });
         const cachedLongUrl = await redisClient.get(longUrl);
-        if(cachedLongUrl) return res.status(400).json({ error: 'Long URL already exists',shortUrl: cachedLongUrl });
+        if (cachedLongUrl) return res.status(400).json({ error: 'Long URL already exists', shortUrl: cachedLongUrl });
         const shortUrl = generateShortUrl(customAlias);
 
         const newUrl = await URL.create({
